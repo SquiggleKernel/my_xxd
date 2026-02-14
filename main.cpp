@@ -3,18 +3,23 @@
 #include <iomanip>
 
 
+// break it into funcitons
+// functions to take 16 bytes as input from file and convert them to unsigned then return the array
+// function to print bytesno: hex of 16 bytes  string of bytes (ASCII if printable )
+
+void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTogether);
+
 int main(int argc ,char** argv) {
 
-    // if (argc < 2) {
-    //     std::cerr << "Usage: ./my_xxd <filename>\n";
-    //     return 1;
-    // }
+    if (argc < 2) {
+        std::cerr << "Usage: ./my_xxd <filename>\n";
+        return 1;
+    }
 
     std::ifstream myFile(argv[argc-1] , std::ios::binary);
 
-
     if (!myFile.is_open()) {
-        std::cerr << "file not open";
+        std::cerr << "[ERROR]: unable to open file";
         return 1;
     }
 
@@ -25,42 +30,20 @@ int main(int argc ,char** argv) {
     unsigned char charBuffer[16]{};
     int counter{0};
 
-
-    std::cout <<std::setw(8)<<std::setfill('0') << bytesPrinted << ": "  ;
-
     while (myFile.get(rawchar)) {
         unsigned char ch {static_cast<unsigned char>(rawchar)};
 
+        charBuffer[counter] = ch;
 
-        std::cout << std::hex << std::setw(2) << std::setfill('0')  <<  static_cast<int>(ch) ;
-        if (ch >=32 && ch<=126) {
-            charBuffer[counter] = ch;
-        }
-        else charBuffer[counter] = '.';
-        counter++;
         bytesPrinted++;
-
-        if (bytesPrinted%bytesTogether ==0) {
-            std::cout << " ";
-        }
-
-        if (counter == 16 ) {
-            std::cout << " ";
-            for (unsigned char c : charBuffer) {
-                std::cout << c;
-            }
-            std::cout << '\n' << std::setw(8)<<std::setfill('0') << bytesPrinted << ": "  ;
+        counter ++;
+        if (counter == 16) {
+            printAsHex(charBuffer, bytesPrinted, bytesTogether);
             counter = 0;
         }
     }
     if (counter) {
-        for (int i{0} ; i < (16-counter)*2 + (16-counter)/(bytesTogether) +2 ; i++ ) {
-            std::cout << " ";
-        }
-        for (int i{0} ; i < counter; i++) {
-            std::cout << charBuffer[i];
-        }
-        std::cout << '\n';
+        printAsHex(charBuffer, bytesPrinted, bytesTogether);
     }
 
     myFile.close();
