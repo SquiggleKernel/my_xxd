@@ -1,7 +1,6 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-#include <array>
 
 
 // break it into funcitons
@@ -26,7 +25,7 @@ int main(int argc ,char** argv) {
 
 
 
-    bool color {1};
+    bool color {0};
     char rawchar{};
     int bytesTogether{2}, bytesPrinted{0} ;
 

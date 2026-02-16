@@ -7,18 +7,19 @@
 #include <iomanip>
 
 
-//defining colors need only foreground colors.
+//defining ANSI colors need only foreground colors.
 [[maybe_unused]] const char* red {"\033[1;91m"};
 [[maybe_unused]] const char* green {"\033[1;92m"};
 [[maybe_unused]] const char* yellow {"\033[1;93m"};
 [[maybe_unused]] const char* blue {"\033[1;94m"};
 [[maybe_unused]] const char* white {"\033[1;97m"};
-[[maybe_unused]] const char* reset {"\033[0m"};
+[[maybe_unused]] const char* default_color {"\033[0m"};
 
 void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTogether , bool color);
 const char* decideColor(bool color , unsigned char c);
 
 
+// different colors for different characters are decided here
 const char* decideColor(bool color , unsigned char c) {
     if (color) {
         if (c<=126 && c>=32)
@@ -33,13 +34,24 @@ const char* decideColor(bool color , unsigned char c) {
             return red;
     }
     else
-        return white;
+        return "";
 }
 
+//defining function for reset
+std::string reset(bool color) {
+    if (color) return default_color;
+    else return "";
+}
+
+
+
+// takes 16 bytes buffer and prints them into hex
 void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTogether , bool color) {
 
+    if (color)
+        std::cout << white;
     std::cout << std::hex << std::setw(8) << std::setfill('0') << bytesPrinted - 16 << ": " << std::flush;
-
+    std::cout << reset(color);
 
     const int hexWidth {16*2 + 16/bytesTogether};
     int counter {0};
@@ -57,7 +69,7 @@ void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTog
 
         std::cout << decideColor(color, bufferArray[i]);
         std::cout << std::hex << std::setw(2) << std::setfill('0') << static_cast<int>(bufferArray[i]);
-        std::cout << reset;
+        std::cout << reset(color);
 
         counter++;
         if (counter%bytesTogether ==0)
@@ -81,7 +93,7 @@ void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTog
         else
             std::cout << '.';
 
-        std::cout << reset;
+        std::cout << reset(color);
     }
     std::cout << '\n';
 
