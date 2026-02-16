@@ -1,7 +1,7 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
-
+#include <chrono>
 
 // break it into funcitons
 // functions to take 16 bytes as input from file and convert them to unsigned then return the array
@@ -10,6 +10,10 @@
 void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTogether , bool color);
 
 int main(int argc ,char** argv) {
+
+
+    std::ios_base::sync_with_stdio(false);
+    std::cin.tie(NULL);
 
     if (argc < 2) {
         std::cerr << "Usage: ./my_xxd <filename>\n";
@@ -25,7 +29,7 @@ int main(int argc ,char** argv) {
 
 
 
-    bool color {0};
+    bool color {false};
     char rawchar{};
     int bytesTogether{2}, bytesPrinted{0} ;
 
