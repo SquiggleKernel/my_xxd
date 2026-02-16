@@ -1,13 +1,14 @@
 #include <iostream>
 #include <fstream>
 #include <iomanip>
+#include <array>
 
 
 // break it into funcitons
 // functions to take 16 bytes as input from file and convert them to unsigned then return the array
-// function to print bytesno: hex of 16 bytes  string of bytes (ASCII if printable )
 
-void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTogether);
+
+void printAsHex(unsigned char (&bufferArray)[16], int bytesPrinted, int bytesTogether , bool color);
 
 int main(int argc ,char** argv) {
 
@@ -24,6 +25,8 @@ int main(int argc ,char** argv) {
     }
 
 
+
+    bool color {1};
     char rawchar{};
     int bytesTogether{2}, bytesPrinted{0} ;
 
@@ -38,12 +41,12 @@ int main(int argc ,char** argv) {
         bytesPrinted++;
         counter ++;
         if (counter == 16) {
-            printAsHex(charBuffer, bytesPrinted, bytesTogether);
+            printAsHex(charBuffer, bytesPrinted, bytesTogether, color);
             counter = 0;
         }
     }
     if (counter) {
-        printAsHex(charBuffer, bytesPrinted, bytesTogether);
+        printAsHex(charBuffer, bytesPrinted, bytesTogether, color);
     }
 
     myFile.close();
