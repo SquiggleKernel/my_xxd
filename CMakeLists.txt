@@ -7,4 +7,6 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -Werror")
 
 add_executable(my_xxd main.cpp
         xxdCore.cpp
-        xxdCore.h)
+        xxdCore.h
+        unsignedToHex.cpp
+        xxdAsciiWall.cpp)
