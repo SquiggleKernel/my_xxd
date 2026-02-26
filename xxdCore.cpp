@@ -42,48 +42,25 @@ void processBuffer(char* buffer, int bytesRead, int* bytesPrinted) {
 
 // formats 16 bytes of input data and copies to output buffer
 void formatToHex(char* buffer , int bytestoConvert, char* outputBuffer, int* bufferFilled, int bytesPrinted) {
-    char line[68];
-    //auto end = std::format_to(line, "{:08x}: ", static_cast<unsigned int>(bytesPrinted));
-    intToHex(& line[0], bytesPrinted);
-    line[8] = ':';
-    line[9] = ' ';
+    char* end = &outputBuffer[0];
 
-    auto end = &line[10];
-    //
-    // int counter{0};
-    // for (int i{0} ;  i< bytestoConvert ; i++) {
-    //     end = std::format_to(end, "{:02x}", static_cast<unsigned char>(buffer[i]));
-    //     if (counter++%2) {
-    //         end = std::format_to(end, " ");
-    //     }
-    // }
-    // for (int i{0} ;  i< 16-bytestoConvert ; i++) {
-    //     end = std::format_to(end, "  ");
-    //     if (++counter%2) {
-    //         end = std::format_to(end, " ");
-    //     }
-    // }
+    intToHex(& end[0], bytesPrinted);
+    end[8] = ':';
+    end[9] = ' ';
+
+    end += 10;
+
     charToHex(& buffer[0] , bytestoConvert, & end[0]);
     end += 40;
 
     end[0] = ' ';
     end +=1;
 
-    // for (int i{0} ; i< bytestoConvert ; i++) {
-    //     if (buffer[i] >=32 && buffer[i] <= 126) {
-    //         end = std::format_to(end, "{:c}",buffer[i]);
-    //     }
-    //     else
-    //         end = std::format_to(end, ".");
-    // }
-    // for (int i{0} ; i< 16-bytestoConvert ; i++) {
-    //     end = std::format_to(end, " ");
-    // }
     xxdAsciiWall(& buffer[0], bytestoConvert, &end[0]);
     end+=16;
 
     *end = '\n';
 
-    std::memcpy(outputBuffer , line, 68); // their are 68 characters in line
+    //std::memcpy(outputBuffer , line, 68); // their are 68 characters in line
     *bufferFilled += 68;
 }
