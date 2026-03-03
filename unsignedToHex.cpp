@@ -4,16 +4,27 @@
 
 
 #include "xxdCore.h"
+#include <array>
+#include <cstdint>
 
-const char hexLookup[]{"0123456789abcdef"};
+const char* hexLookup[] = {"0123456789abcdef"};
+
+constexpr auto buildHexTable() {
+    const char hex[] = "0123456789abcdef";
+    std::array<uint16_t, 256> t{};
+    for (int i = 0; i < 256; i++)
+        t[i] = (uint16_t)(hex[i >> 4]) | ((uint16_t)(hex[i & 0x0f]) << 8);
+    return t;
+}
+
+static constexpr auto hexPairs = buildHexTable();
 
 void charToHex(char* buffer , int bytesToConvert, char* line) {
     int counter{0};
     char* end{&line[0]};
     for (int i{0} ; i <bytesToConvert ; i++ ) {
-        end[1] = hexLookup[buffer[i] & 0x0f];
-        end[0] = hexLookup[(buffer[i] >> 4) & 0x0f];
-        end = &end[2];
+        *reinterpret_cast<uint16_t*>(end) = hexPairs[(unsigned char)buffer[i]];
+        end += 2;
         if (counter++%2) {
             end[0] = ' ';
             end = end +1;
@@ -28,13 +39,12 @@ void charToHex(char* buffer , int bytesToConvert, char* line) {
             end = end +1;
         }
     }
-
-
 }
 
 void intToHex(char* line, int bytesPrinted) {
-    unsigned int x {static_cast<unsigned int>(bytesPrinted)};
-    for (int i{0}; i < 8; i++) {
-        line[7-i] = hexLookup[(x >> i * 4) & 0x0f];
-    }
+    unsigned int x = static_cast<unsigned int>(bytesPrinted);
+    *reinterpret_cast<uint16_t*>(line+6) = hexPairs[(x) & 0xff];
+    *reinterpret_cast<uint16_t*>(line+4) = hexPairs[(x >>  8) & 0xff];
+    *reinterpret_cast<uint16_t*>(line+2) = hexPairs[(x >> 16) & 0xff];
+    *reinterpret_cast<uint16_t*>(line+0) = hexPairs[(x >> 24) & 0xff];
 }
