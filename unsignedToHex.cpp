@@ -7,7 +7,6 @@
 #include <array>
 #include <cstdint>
 
-const char* hexLookup[] = {"0123456789abcdef"};
 
 constexpr auto buildHexTable() {
     const char hex[] = "0123456789abcdef";
