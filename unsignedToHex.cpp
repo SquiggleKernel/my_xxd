@@ -40,7 +40,7 @@ void charToHex(char* buffer , int bytesToConvert, char* line) {
     }
 }
 
-void intToHex(char* line, int bytesPrinted) {
+void intToHex(char* line, std::int64_t bytesPrinted) {
     unsigned int x = static_cast<unsigned int>(bytesPrinted);
     *reinterpret_cast<uint16_t*>(line+6) = hexPairs[(x) & 0xff];
     *reinterpret_cast<uint16_t*>(line+4) = hexPairs[(x >>  8) & 0xff];

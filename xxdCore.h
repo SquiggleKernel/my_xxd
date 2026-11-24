@@ -7,10 +7,11 @@
 
 
 
+#include <cstdint>
 void formatToHex(char* buffer , int bytestoConvert, char* outputBuffer, int* bufferFilled, int bytesPrinted);
 void processBuffer(char* buffer, int bytesRead, int* bytesPrinted);
 
-void intToHex(char* line, int bytesPrinted);
+void intToHex(char* line, std::int64_t bytesPrinted);
 void charToHex(char* buffer , int bytesToConvert, char* line);
 
 void xxdAsciiWall(char* buffer, int bytesToConvert, char* line);
