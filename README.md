@@ -70,4 +70,4 @@ hyperfine './my_xxd big_file.bin > /dev/null' 'xxd big_file.bin > /dev/null'
 
 The Unlicense - public domain, do whatever you want with it.
 
-Happy hacking! - SquiggleKernel
+Happy hacking! - SquiggleKernel!!!

@@ -8,10 +8,11 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 add_executable(my_xxd
     src/main.cpp
     src/core.hpp
+    src/core.cpp
 )
 
 target_compile_options(my_xxd PRIVATE
-    -Wall -Wextra -Wpedantic -Werror
+    -Wall -Wextra -Wpedantic -Werror -Wconversion 
     $<$<CONFIG:Debug>:-fsanitize=address,undefined -fno-omit-frame-pointer>
     $<$<CONFIG:Release>:-O3 -march=native>
 )
